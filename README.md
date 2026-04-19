@@ -17,8 +17,7 @@ Welcome to the **Log Backup Demo**! This repository demonstrates the use of a si
 Don't want to run the python scripts? No problem. Open your terminal, replace `YOUR_RAPIDAPI_KEY` with your free key from the link above, and copy-paste this:
 
 ```bash
-# 1. Create a dummy log file
-# Create a more realistic log file
+# 1. Create a more realistic log file
 for i in {1..1000}; do echo "2026-04-10 [INFO] User logged in" >> quick_test.log; done
 
 # 2. Upload it and see the savings instantly!
@@ -29,7 +28,7 @@ curl --request POST \
   --form 'file=@quick_test.log'
 ```
 ⏱ Takes less than 2 seconds to run
-if you want even more realistic logs you can follow the instructions below 
+If you want more realistic logs, check the full demo below. 
 
 If you manage servers, you know that log files grow constantly. Backing up a 5GB log file every day means storing 35GB a week. **What if you only had to store the new lines appended each day?**
 
