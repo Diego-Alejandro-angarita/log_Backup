@@ -1,10 +1,16 @@
-# 🚀 Smart Log Backup Demo
+## 🚀 Reduce your log storage costs by up to 95%
+
+Stop paying for duplicate data. This API automatically detects and removes repeated log data, saving you money on every backup.
 
 ![Rust](https://img.shields.io/badge/Powered%20By-Rust-orange?style=for-the-badge&logo=rust)
 ![Savings](https://img.shields.io/badge/Storage%20Savings-Up%20to%2099%25-brightgreen?style=for-the-badge)
 ![API](https://img.shields.io/badge/API-RapidAPI-blue?style=for-the-badge)
 
 Welcome to the **Log Backup Demo**! This repository demonstrates the raw power of the **Rust Deduplication Backup API**. 
+
+## ⚡ Try it now
+
+👉 https://rapidapi.com/DiegoAlejandroangarita/api/deduplication-system-api
 
 If you manage servers, you know that log files grow constantly. Backing up a 5GB log file every day means storing 35GB a week. **What if you only had to store the new lines appended each day?**
 
@@ -25,6 +31,8 @@ You are backing up a 10 GB log file daily for a month (30 days). The file grows 
 | ✅ **Our API** | **15 GB** *(Only the deltas!)* | **15 GB** | **$1.50 / month** |
 
 **That is a 95% reduction in your cloud storage and egress billing!**
+
+*Costs are approximate and depend on cloud provider pricing.
 
 ---
 
@@ -64,6 +72,28 @@ Storage Impact: 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
 💰 SPACE SAVED ON CLOUD: 5.00 MB
 ```
 *(Only 1 red block was saved on Day 2! The green blocks mean free storage!)*
+
+---
+
+---
+
+## 🧪 What makes this different?
+
+- Block-level deduplication (4KB precision)
+- Works even with dynamic logs (timestamps, IDs)
+- No complex setup (no rsync, no diffing)
+- Real-time storage savings
+
+---
+
+---
+
+## 🎯 Who is this for?
+
+- DevOps engineers managing logs
+- Backend developers handling backups
+- SaaS teams optimizing cloud costs
+- Anyone storing large log files in AWS/GCP/Azure
 
 ---
 
