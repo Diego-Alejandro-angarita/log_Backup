@@ -96,6 +96,16 @@ Storage Impact: 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
 
 ---
 
+## ⚡ Why developers use this
+
+- Reduce AWS S3 costs instantly
+- No need to build custom backup logic
+- Works with existing pipelines
+
+---
+
+---
+
 ## 🧪 What makes this different?
 
 - Block-level deduplication (4KB precision)
