@@ -104,7 +104,8 @@ def main():
     # Day 1: The initial backup
     print("--- DAY 1: Initial Log Backup ---")
     log_v1 = "server_day1.log"
-    size_v1 = generate_dummy_log(log_v1, size_mb=5)
+    # Cambiado a 1 MB temporalmente para que funcione con el servidor actual
+    size_v1 = generate_dummy_log(log_v1, size_mb=1)
     stats_v1 = backup_file(log_v1, "logs_day1")
     print_visual_stats("DAY 1", size_v1, stats_v1)
     
@@ -116,7 +117,7 @@ def main():
         "2026-04-11 11:00:01 ERROR [App] User login failed.",
         "2026-04-11 11:05:00 WARN [Memory] High memory usage detected."
     ]
-    size_v2 = generate_dummy_log(log_v2, size_mb=5, append_lines=new_logs)
+    size_v2 = generate_dummy_log(log_v2, size_mb=1, append_lines=new_logs)
     stats_v2 = backup_file(log_v2, "logs_day2")
     print_visual_stats("DAY 2", size_v2, stats_v2)
 
