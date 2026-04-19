@@ -10,6 +10,24 @@ If you manage servers, you know that log files grow constantly. Backing up a 5GB
 
 That's exactly what this API does natively, without you having to write complex `rsync` or diffing logic!
 
+---
+
+## 💸 Translating Bytes into Dollars (The ROI)
+
+Saving space isn't just about freeing up disk capacity; it's about drastically reducing your monthly AWS, Azure, or Google Cloud billing. Every GB you send over the network and store costs money. 
+
+**Let's look at a real-world scenario:**
+You are backing up a 10 GB log file daily for a month (30 days). The file grows by roughly 500 MB of *new* logs each day.
+
+| Backup Method | Total Data Uploaded (Network) | Total Data Stored (Disk) | Estimated Monthly Cost ($0.10/GB) |
+|---------------|-------------------------------|--------------------------|----------------------------------|
+| ❌ Traditional | 300 GB | 300 GB | **$30.00 / month** |
+| ✅ **Our API** | **15 GB** *(Only the deltas!)* | **15 GB** | **$1.50 / month** |
+
+**That is a 95% reduction in your cloud storage and egress billing!**
+
+---
+
 ## 📉 The Problem vs. The Solution
 
 ### ❌ Traditional Backup (Wasteful)
@@ -28,7 +46,7 @@ Files are split into tiny 4KB blocks. We only save blocks we haven't seen before
 
 ## 🎨 Visualizing the Savings
 
-When you run our demo script, you will see exactly how the API treats your data:
+When you run our demo script, you will see exactly how the API treats your data. Even when appending highly dynamic logs with changing timestamps and IDs, the API isolates the new data perfectly:
 
 ```text
 📊 --- DAY 1 BACKUP STATS --- 📊
@@ -55,14 +73,23 @@ Want to see it in action on your own machine? It takes 10 seconds!
 
 ### Prerequisites
 * Python 3 installed
-* The `requests` library (`pip install requests`)
+* The `requests` and `python-dotenv` libraries (`pip install -r requirements.txt`)
 
 ### Run It!
 1. Clone this repository.
-2. Open `backup_logs.py` and insert your RapidAPI Key if using the public gateway.
-3. Execute the script:
+2. Create a `.env` file and insert your `RAPIDAPI_KEY` and `API_BASE_URL`.
+3. Execute the realistic script:
    ```bash
-   python3 backup_logs.py
+   python3 realistic_log_demo.py
    ```
 
-Watch as the script generates a fake 5MB server log, backs it up, appends a couple of errors, and backs it up again. **You will instantly see the deduplication magic happen in your terminal!**
+Watch as the script generates a fake server log, backs it up, appends new dynamic errors (with varying timestamps), and backs it up again. **You will instantly see the deduplication magic happen in your terminal!**
+
+---
+
+## 🚀 Ready to drop your cloud bills?
+
+Stop paying for identical data. Integrate our 4KB block-level deduplication engine into your workflows today and watch your storage costs plummet.
+
+### 👉 [Start reducing your storage costs now! Try the API on RapidAPI](https://rapidapi.com/DiegoAlejandroangarita/api/deduplication-system-api) 👈
+
