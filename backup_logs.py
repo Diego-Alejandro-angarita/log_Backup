@@ -4,12 +4,25 @@ import os
 import sys
 import json
 
+# Fallback en caso de que python-dotenv no este instalado localmente
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Configuration
-API_URL = "https://rust-backup-api-94438501352.us-central1.run.app/backup"
-# If using RapidAPI, uncomment and use the lines below:
-# API_URL = "https://rust-deduplication-backup-api.p.rapidapi.com/backup"
-# HEADERS = {"X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY_HERE"}
-HEADERS = {}
+API_BASE_URL = os.getenv("API_BASE_URL", "https://rust-backup-api-94438501352.us-central1.run.app")
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
+
+API_URL_BACKUP = f"{API_BASE_URL}/backup"
+API_URL_RESTORE = f"{API_BASE_URL}/restore"
+
+# El servidor de Axum que configuramos espera X-RapidAPI-Proxy-Secret para proteger la ruta
+HEADERS = {"X-RapidAPI-Proxy-Secret": RAPIDAPI_KEY} if RAPIDAPI_KEY else {}
+
+# Si estuvieras apuntando al endpoint real de rapidapi.com, el header seria:
+# HEADERS = {"X-RapidAPI-Key": RAPIDAPI_KEY} if RAPIDAPI_KEY else {}
 
 def generate_dummy_log(filename, size_mb, append_lines=None):
     """Generates a dummy log file to simulate server logs."""
@@ -32,7 +45,7 @@ def backup_file(filepath, recipe_name):
     print(f"\n🚀 Backing up {filepath} as '{recipe_name}'...")
     with open(filepath, 'rb') as f:
         start_time = time.time()
-        response = requests.post(f"{API_URL}/{recipe_name}", headers=HEADERS, files={'file': f})
+        response = requests.post(f"{API_URL_BACKUP}/{recipe_name}", headers=HEADERS, files={'file': f})
         elapsed = time.time() - start_time
         
     if response.status_code == 200:
@@ -42,6 +55,21 @@ def backup_file(filepath, recipe_name):
     else:
         print(f"❌ Failed: {response.status_code} - {response.text}")
         sys.exit(1)
+
+def restore_file(recipe_name, output_filename):
+    """Restores a file from the deduplication API."""
+    print(f"\n📥 Restoring '{recipe_name}' to {output_filename}...")
+    start_time = time.time()
+    response = requests.get(f"{API_URL_RESTORE}/{recipe_name}", headers=HEADERS)
+    elapsed = time.time() - start_time
+
+    if response.status_code == 200:
+        with open(output_filename, 'wb') as f:
+            f.write(response.content)
+        print(f"✅ Success! Restored {len(response.content) / (1024*1024):.2f} MB (Took {elapsed:.2f}s)")
+    else:
+         print(f"❌ Failed to restore: {response.status_code} - {response.text}")
+         sys.exit(1)
 
 def print_visual_stats(day, file_size, stats):
     """Prints a beautiful visual representation of the savings."""
@@ -91,10 +119,26 @@ def main():
     size_v2 = generate_dummy_log(log_v2, size_mb=5, append_lines=new_logs)
     stats_v2 = backup_file(log_v2, "logs_day2")
     print_visual_stats("DAY 2", size_v2, stats_v2)
+
+    # Restore the Day 2 log to prove it works
+    print("\n--- VERIFICATION: Restoring Day 2 Log ---")
+    restored_log = "restored_server_day2.log"
+    restore_file("logs_day2", restored_log)
+    
+    # Simple check to verify it matches
+    original_size = os.path.getsize(log_v2)
+    restored_size = os.path.getsize(restored_log)
+    
+    if original_size == restored_size:
+        print("\n✅ Verification Passed: Restored file size perfectly matches the original!")
+    else:
+        print(f"\n❌ Verification Failed: Original is {original_size} bytes, restored is {restored_size} bytes.")
+
     
     # Cleanup
     os.remove(log_v1)
     os.remove(log_v2)
+    os.remove(restored_log)
     print("\n🎉 Demo finished! Notice how Day 2 cost almost 0 bytes of extra storage!")
 
 if __name__ == "__main__":
