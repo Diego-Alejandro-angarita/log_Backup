@@ -6,7 +6,7 @@ Stop paying for duplicate data. This API automatically detects and removes repea
 ![Savings](https://img.shields.io/badge/Storage%20Savings-Up%20to%2099%25-brightgreen?style=for-the-badge)
 ![API](https://img.shields.io/badge/API-RapidAPI-blue?style=for-the-badge)
 
-Welcome to the **Log Backup Demo**! This repository demonstrates the raw power of the **Rust Deduplication Backup API**. 
+Welcome to the **Log Backup Demo**! This repository demonstrates the use of a simple **API to reduce log storage costs automatically**. 
 
 ## ⚡ Try it now
 
@@ -18,7 +18,8 @@ Don't want to run the python scripts? No problem. Open your terminal, replace `Y
 
 ```bash
 # 1. Create a dummy log file
-echo "2026-04-10 [INFO] Testing the deduplication engine..." > quick_test.log
+# Create a more realistic log file
+for i in {1..1000}; do echo "2026-04-10 [INFO] User logged in" >> quick_test.log; done
 
 # 2. Upload it and see the savings instantly!
 curl --request POST \
@@ -27,6 +28,8 @@ curl --request POST \
   --header 'Content-Type: multipart/form-data' \
   --form 'file=@quick_test.log'
 ```
+⏱ Takes less than 2 seconds to run
+if you want even more realistic logs you can follow the instructions below 
 
 If you manage servers, you know that log files grow constantly. Backing up a 5GB log file every day means storing 35GB a week. **What if you only had to store the new lines appended each day?**
 
